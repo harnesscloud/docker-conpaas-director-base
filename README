@@ -1,0 +1,19 @@
+This folder contains the dockerfiles for creating the image for the ConPaaS container.
+
+In the base folder there is a dockerfile which generates a base image which consists
+of an ubuntu distro plus all the dependencies required by ConPaaS. This image is quite 
+static and needs to be crated only once.
+
+In the contpaas folder there is a docker file which generates an image where the latest 
+version of the Harness branch of ConPaaS is installed. This image is based on the base image
+and can be generated everytime there is a modification in ConPaaS.
+
+Once a container with contpaas image is running you need to configure the ConPaaS director in order to communicate with the CRS:
+#sed -i '/SPEEDFACTOR/a\DRIVER = harness\nIMAGE_ID = 47e73132-5e31-4f0a-a9c9-76365a27ed28\nHOST = http://localhost:56789' /etc/cpsdirector/director.cfg
+(Change the IMAGE_ID and HOST accordingly)
+
+and restart the apache server:
+#service apache2 restart
+
+
+
