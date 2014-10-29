@@ -1,6 +1,5 @@
-FROM      ubuntu:latest
+FROM ubuntu:latest
 MAINTAINER Genc Tato <genc.tato@irisa.fr>
-
 
 RUN apt-get update && apt-get install -y \
     git default-jdk libffi-dev \
