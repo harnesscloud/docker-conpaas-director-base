@@ -50,4 +50,7 @@ RUN bash mkdist.sh 1.5.0 && \
 COPY ./scripts/startconpaas.sh /etc/my_init.d/10-conpaas
 RUN chmod 755 /etc/my_init.d/10-conpaas
 
+VOLUMES [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
+          '/var/log/apache2' ]
+
 EXPOSE 22 80 443
