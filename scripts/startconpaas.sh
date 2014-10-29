@@ -4,6 +4,8 @@
 : ${PASSWORD:="password"}
 : ${EMAIL:="test@email"}
 
+export HOME=/root
+
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '${DIRECTOR_URL}'%" /var/www/html/config.php
 service apache2 start
 cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}
