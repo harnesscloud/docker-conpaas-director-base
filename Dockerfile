@@ -2,6 +2,7 @@ FROM phusion/baseimage:latest
 MAINTAINER Genc Tato <genc.tato@irisa.fr> and Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get -y install \
         apache2 \
@@ -17,7 +18,8 @@ RUN apt-get update && \
         python-httplib2 \
         python-pip \
         python-setuptools \
-        sqlite3 
+        sqlite3 && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
@@ -27,28 +29,28 @@ WORKDIR /var/cache/docker/workdirs/conpaas
 
 # install conpaas 
 RUN bash mkdist.sh 1.5.0 && \
-    easy_install --always-unzip cpslib-*.tar.gz cpsclient-*.tar.gz && \
     tar -xaf cpsdirector-*.tar.gz && \
     tar -xaf cpsfrontend-*.tar.gz && \
+    easy_install --always-unzip cpslib-*.tar.gz cpsclient-*.tar.gz && \
     cp -r cpsfrontend-*/www/* /var/www/html/ && \
     rm /var/www/html/index.html && \
     cp /var/www/html/config-example.php /var/www/html/config.php && \
-    cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/ && \
-    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/ && \
-    sed -i 'Listen 56788' /etc/apache2/sites-enabled/default-ssl.conf && \
-    sed -i s/:443/:56788/g /etc/apache2/sites-enabled/default-ssl.conf && \
+    cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
+    mv /etc/apache2/sites-available/conpaas-director \
+       /etc/apache2/sites-available/conpaas-director.conf && \
+    sed -i 'N; s/\ *\<Order deny,allow\>\n\ *\<Allow from all\>/        Require all granted/g' /etc/apache2/sites-available/conpaas-director.conf && \
+    cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
+    sed -i "s/^\(logfile\s*=\s*\).*$/logfile = \/var\/log\/apache2\/cpsfrontend-error.log/" /etc/cpsdirector/main.ini && \
+    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
     a2ensite conpaas-director.conf && \
     a2enmod ssl && \
     a2ensite default-ssl && \
-    cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
     rm -rf *.tar.gz cpsfrontend* cpsdirector*
 
-RUN sed 'N; s/\ *\<Order deny,allow\>\n\ *\<Allow from all\>/        Require all granted/g' /etc/apache2/sites-available/conpaas-director > /etc/apache2/sites-available/conpaas-director.conf
+COPY ./scripts/startconpaas.sh /etc/my_init.d/10-conpaas
+RUN chmod 755 /etc/my_init.d/10-conpaas
 
-RUN sed -i "s/^\(const DIRECTOR_URL\s*=\s*\).*$/const DIRECTOR_URL = 'https:\/\/localhost:5555';/" /var/www/html/config.php
-RUN sed -i "s/^\(logfile\s*=\s*\).*$/logfile = \/var\/log\/apache2\/cpsfrontend-error.log/" /etc/cpsdirector/main.ini
-
+#RUN sed -i "s/^\(const DIRECTOR_URL\s*=\s*\).*$/const DIRECTOR_URL = 'https:\/\/localhost:5555';/" /var/www/html/config.php
 #RUN cpsadduser.py test@email test password
 #RUN cpsclient.py credentials https://localhost:5555 test password
-
 
