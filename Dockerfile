@@ -50,7 +50,4 @@ RUN bash mkdist.sh 1.5.0 && \
 COPY ./scripts/startconpaas.sh /etc/my_init.d/10-conpaas
 RUN chmod 755 /etc/my_init.d/10-conpaas
 
-#RUN sed -i "s/^\(const DIRECTOR_URL\s*=\s*\).*$/const DIRECTOR_URL = 'https:\/\/localhost:5555';/" /var/www/html/config.php
-#RUN cpsadduser.py test@email test password
-#RUN cpsclient.py credentials https://localhost:5555 test password
-
+EXPOSE 22 80 443
