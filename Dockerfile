@@ -1,4 +1,4 @@
-FROM phusion/baseimage:latest
+FROM marklee77/phusion-cloudinit:latest
 MAINTAINER Genc Tato <genc.tato@irisa.fr> and Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
