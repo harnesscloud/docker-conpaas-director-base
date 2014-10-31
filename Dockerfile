@@ -28,11 +28,10 @@ RUN mkdir -p /var/cache/docker/workdirs && \
 WORKDIR /var/cache/docker/workdirs/conpaas
 
 # FIXME: really should allow for proper certificates
-RUN openssl req -newkey rsa:2048 -x509 -nodes -days 365 -subj "/CN=conpaas" \
-      -out /usr/local/share/ca-certificates/conpaas.crt \
-      -keyout /etc/ssl/private/conpaas.key && \
-    update-ca-certificates && \
-    sed -i "s/ssl-cert-snakeoil/conpaas/g" /etc/apache2/sites-available/default-ssl
+#RUN openssl req -newkey rsa:2048 -x509 -nodes -days 365 -subj "/CN=conpaas" \
+#      -out /usr/local/share/ca-certificates/conpaas.crt \
+#      -keyout /etc/ssl/private/conpaas.key && \
+#    update-ca-certificates
 
 # install conpaas 
 RUN bash mkdist.sh 1.5.0 && \
@@ -60,4 +59,4 @@ RUN chmod 755 /etc/my_init.d/10-conpaas
 VOLUME [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
          '/var/log/apache2' ]
 
-EXPOSE 80 443
+EXPOSE 5555
