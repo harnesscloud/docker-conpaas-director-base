@@ -1,4 +1,4 @@
-FROM marklee77/phusion-cloudinit:latest
+FROM marklee77/baseimage-cloud:latest
 MAINTAINER Genc Tato <genc.tato@irisa.fr> and Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
@@ -27,6 +27,13 @@ RUN mkdir -p /var/cache/docker/workdirs && \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
 
+# FIXME: really should allow for proper certificates
+RUN openssl req -newkey rsa:2048 -x509 -nodes -days 365 -subj "/CN=conpaas" \
+      -out /usr/local/share/ca-certificates/conpaas.crt \
+      -keyout /etc/ssl/private/conpaas.key && \
+    update-ca-certificates && \
+    sed -i "s/ssl-cert-snakeoil/conpaas/g" /etc/apache2/sites-available/default-ssl
+
 # install conpaas 
 RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
@@ -51,6 +58,6 @@ COPY ./scripts/startconpaas.sh /etc/my_init.d/10-conpaas
 RUN chmod 755 /etc/my_init.d/10-conpaas
 
 VOLUME [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
-          '/var/log/apache2' ]
+         '/var/log/apache2' ]
 
 EXPOSE 80 443
