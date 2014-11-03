@@ -56,7 +56,7 @@ RUN mkdir -p /etc/my_init.d && \
 \n\
 export HOME=/root\n\
 \n\
-sed -i "/^const DIRECTOR_URL =/s%=.*$%= '\${DIRECTOR_URL}'%" /var/www/html/config.php\n\
+sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"\${DIRECTOR_URL}"'"';%" /var/www/html/config.php\n\
 service apache2 start\n\
 cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}\n\
 cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}\n' && \
