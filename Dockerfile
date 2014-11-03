@@ -47,6 +47,7 @@ RUN bash mkdist.sh 1.5.0 && \
     a2ensite default-ssl && \
     rm -rf *.tar.gz cpsfrontend* cpsdirector*
 
+# create startup scripts
 RUN mkdir -p /etc/my_init.d && \
     > /etc/my_init.d/10-conpaas echo '#!/bin/sh\n\
 : ${DIRECTOR_URL:="https://localhost:5555"}\n\
@@ -62,7 +63,9 @@ cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}\n\
 cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}\n' && \
     chmod 755 /etc/my_init.d/10-conpaas
 
+# data volumes
 VOLUME [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
          '/var/log/apache2' ]
 
-EXPOSE 5555
+# interface ports
+EXPOSE 80 443 5555
