@@ -15,6 +15,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.ssh.username = "root"
-  config.ssh.private_key_path = "keys/phusion.key"
+  config.ssh.private_key_path = "phusion.key"
 
 end
