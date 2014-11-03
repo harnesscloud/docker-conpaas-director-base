@@ -1,4 +1,4 @@
-FROM marklee77/baseimage-cloud:latest
+FROM marklee77/cloudimage:latest
 MAINTAINER Genc Tato <genc.tato@irisa.fr> and Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
