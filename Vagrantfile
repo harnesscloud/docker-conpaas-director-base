@@ -6,7 +6,7 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.network "forwarded_port", guest: 5555, host: 5555
+  config.vm.network "forwarded_port", guest: 80, host: 8080
 
   config.vm.provider "docker" do |d|
     d.build_dir  = "."

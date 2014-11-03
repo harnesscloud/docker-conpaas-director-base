@@ -27,12 +27,6 @@ RUN mkdir -p /var/cache/docker/workdirs && \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
 
-# FIXME: really should allow for proper certificates
-#RUN openssl req -newkey rsa:2048 -x509 -nodes -days 365 -subj "/CN=conpaas" \
-#      -out /usr/local/share/ca-certificates/conpaas.crt \
-#      -keyout /etc/ssl/private/conpaas.key && \
-#    update-ca-certificates
-
 # install conpaas 
 RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
@@ -53,7 +47,6 @@ RUN bash mkdist.sh 1.5.0 && \
     a2ensite default-ssl && \
     rm -rf *.tar.gz cpsfrontend* cpsdirector*
 
-#COPY ./scripts/startconpaas.sh /etc/my_init.d/10-conpaas
 RUN mkdir -p /etc/my_init.d && \
     > /etc/my_init.d/10-conpaas echo '#!/bin/sh\n\
 : ${DIRECTOR_URL:="https://localhost:5555"}\n\
