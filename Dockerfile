@@ -64,8 +64,8 @@ cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}\n' && \
     chmod 755 /etc/my_init.d/10-conpaas
 
 # data volumes
-VOLUME [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
-         '/var/log/apache2' ]
+VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/www/html", \
+         "/var/log/apache2" ]
 
 # interface ports
 EXPOSE 22 80 443 5555
