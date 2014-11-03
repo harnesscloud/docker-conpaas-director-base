@@ -68,4 +68,4 @@ VOLUME [ '/etc/apache2', '/etc/cpsdirector', '/var/www/html', \
          '/var/log/apache2' ]
 
 # interface ports
-EXPOSE 80 443 5555
+EXPOSE 22 80 443 5555
