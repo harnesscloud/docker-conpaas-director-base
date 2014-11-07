@@ -54,7 +54,7 @@ RUN mkdir -p /etc/my_init.d && \
 : ${PASSWORD:="password"}\n\
 : ${EMAIL:="test@email"}\n\
 : ${IP_ADDRESS:="$(ip addr show | perl -ane '"'"'print substr($F[1], 0, index($F[1], "/")), "\\n" if /^\s*inet\s/;'"'"' | grep -v 127.0.0.1)"}\n\
-: ${DIRECTOR_URL:="http://${IP_ADDRESS}:5555"}\n\
+: ${DIRECTOR_URL:="https://${IP_ADDRESS}:5555"}\n\
 \n\
 export HOME=/root\n\
 \n\
