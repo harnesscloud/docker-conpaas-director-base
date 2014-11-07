@@ -1,5 +1,5 @@
 FROM marklee77/cloudimage:latest
-MAINTAINER Genc Tato <genc.tato@irisa.fr> and Mark Stillwell <mark@stillwell.me>
+MAINTAINER Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
 ENV DEBIAN_FRONTEND noninteractive
@@ -50,14 +50,18 @@ RUN bash mkdist.sh 1.5.0 && \
 # create startup scripts
 RUN mkdir -p /etc/my_init.d && \
     > /etc/my_init.d/10-conpaas echo '#!/bin/sh\n\
-: ${DIRECTOR_URL:="https://localhost:5555"}\n\
 : ${USERNAME:="test"}\n\
 : ${PASSWORD:="password"}\n\
 : ${EMAIL:="test@email"}\n\
+: ${IP_ADDRESS:="$(ip addr show | perl -ane '"'"'print substr($F[1], 0, index($F[1], "/")), "\\n" if /^\s*inet\s/;'"'"' | grep -v 127.0.0.1)"}\n\
+: ${DIRECTOR_URL:="http://${IP_ADDRESS}:5555"}\n\
 \n\
 export HOME=/root\n\
 \n\
-sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"\${DIRECTOR_URL}"'"';%" /var/www/html/config.php\n\
+sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"'${DIRECTOR_URL}'"'"';%" /var/www/html/config.php\n\
+sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cfg\n\
+echo ServerName ${IP_ADDRESS} > /etc/apache2/conf-available/ip-servername.conf\n\
+a2enconf ip-servername\n\
 service apache2 start\n\
 cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}\n\
 cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}\n' && \
