@@ -30,8 +30,7 @@ sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cf
 sed -i -e '/^\[iaas\]/,/^\[.*\]/ { /^DRIVER\s*=.*/ d; }' -e '/^\[iaas\]/ a DRIVER = harness' /etc/cpsdirector/director.cfg
 sed -i -e "/^\[iaas\]/,/^\[.*\]/ { /^HOST\s*=.*/ d; }" -e "/^\[iaas\]/ a HOST = ${CRS_URL}" /etc/cpsdirector/director.cfg
 sed -i -e "/^\[iaas\]/,/^\[.*\]/ { /^IMAGE_ID\s*=.*/ d; }" -e "/^\[iaas\]/ a IMAGE_ID = ${CRS_URL}" /etc/cpsdirector/director.cfg
-echo ServerName ${IP_ADDRESS} > /etc/apache2/conf-available/ip-servername.conf
-a2enconf ip-servername 
+echo ServerName ${IP_ADDRESS} > /etc/apache2/conf.d/ip-servername.conf
 service apache2 start
 cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}
 cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}
