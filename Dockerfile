@@ -44,7 +44,7 @@ RUN bash mkdist.sh 1.5.0 && \
     cp /var/www/config-example.php /var/www/config.php && \
     cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
     cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
-    sed -i "s/^\(logfile\s*=\s*\).*$/logfile = \/var\/log\/apache2\/cpsfrontend-error.log/" /etc/cpsdirector/main.ini && \
+    sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini && \
     cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
     a2ensite conpaas-director && \
     a2enmod ssl && \
