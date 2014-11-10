@@ -34,7 +34,6 @@ RUN mkdir -p /var/cache/docker/workdirs && \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
 
-# sed -i 'N; s/\ *\<Order deny,allow\>\n\ *\<Allow from all\>/        Require all granted/g' /etc/apache2/sites-available/conpaas-director && \
 # install conpaas 
 RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
