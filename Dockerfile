@@ -41,13 +41,11 @@ RUN bash mkdist.sh 1.5.0 && \
     rm /var/www/index.html && \
     cp /var/www/config-example.php /var/www/config.php && \
     cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
-    mv /etc/apache2/sites-available/conpaas-director \
-       /etc/apache2/sites-available/conpaas-director.conf && \
-    sed -i 'N; s/\ *\<Order deny,allow\>\n\ *\<Allow from all\>/        Require all granted/g' /etc/apache2/sites-available/conpaas-director.conf && \
+    sed -i 'N; s/\ *\<Order deny,allow\>\n\ *\<Allow from all\>/        Require all granted/g' /etc/apache2/sites-available/conpaas-director && \
     cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
     sed -i "s/^\(logfile\s*=\s*\).*$/logfile = \/var\/log\/apache2\/cpsfrontend-error.log/" /etc/cpsdirector/main.ini && \
     cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
-    a2ensite conpaas-director.conf && \
+    a2ensite conpaas-director && \
     a2enmod ssl && \
     a2ensite default-ssl && \
     rm -rf *.tar.gz cpsfrontend* cpsdirector*

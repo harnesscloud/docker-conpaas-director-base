@@ -25,7 +25,7 @@ rm -f ${TMPFILE}
 
 export HOME=/root
 
-sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"'${DIRECTOR_URL}'"'"';%" /var/www/html/config.php
+sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"'${DIRECTOR_URL}'"'"';%" /var/www/config.php
 sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cfg
 sed -i -e '/^\[iaas\]/,/^\[.*\]/ { /^DRIVER\s*=.*/ d; }' -e '/^\[iaas\]/ a DRIVER = harness' /etc/cpsdirector/director.cfg
 sed -i -e "/^\[iaas\]/,/^\[.*\]/ { /^HOST\s*=.*/ d; }" -e "/^\[iaas\]/ a HOST = ${CRS_URL}" /etc/cpsdirector/director.cfg
