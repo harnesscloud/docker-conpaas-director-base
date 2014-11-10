@@ -1,4 +1,4 @@
-FROM marklee77/cloudimage:latest
+FROM marklee77/debian-cloudimage:latest
 MAINTAINER Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
@@ -14,12 +14,16 @@ RUN apt-get update && \
         libcurl4-openssl-dev \
         libffi-dev \
         php5-curl \
+        python \
         python-dev \
         python-httplib2 \
         python-pip \
+        python-pycurl \
         python-setuptools \
+        python-simplejson \
         sqlite3 && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
@@ -48,28 +52,11 @@ RUN bash mkdist.sh 1.5.0 && \
     rm -rf *.tar.gz cpsfrontend* cpsdirector*
 
 # create startup scripts
-RUN mkdir -p /etc/my_init.d && \
-    > /etc/my_init.d/10-conpaas echo '#!/bin/sh\n\
-: ${USERNAME:="test"}\n\
-: ${PASSWORD:="password"}\n\
-: ${EMAIL:="test@email"}\n\
-: ${IP_ADDRESS:="$(ip addr show | perl -ane '"'"'print substr($F[1], 0, index($F[1], "/")), "\\n" if /^\s*inet\s/;'"'"' | grep -v 127.0.0.1)"}\n\
-: ${DIRECTOR_URL:="https://${IP_ADDRESS}:5555"}\n\
-\n\
-export HOME=/root\n\
-\n\
-sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"'${DIRECTOR_URL}'"'"';%" /var/www/html/config.php\n\
-sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cfg\n\
-echo ServerName ${IP_ADDRESS} > /etc/apache2/conf-available/ip-servername.conf\n\
-a2enconf ip-servername\n\
-service apache2 start\n\
-cpsadduser.py ${EMAIL} ${USERNAME} ${PASSWORD}\n\
-cpsclient.py credentials ${DIRECTOR_URL} ${USERNAME} ${PASSWORD}\n' && \
-    chmod 755 /etc/my_init.d/10-conpaas
+ADD conpaas.sh /etc/my_init.d/10-conpaas
+RUN chmod 0755 /etc/my_init.d/10-conpaas
 
 # data volumes
-VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/www/html", \
-         "/var/log/apache2" ]
+VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/log/apache2" ]
 
 # interface ports
 EXPOSE 22 80 443 5555
