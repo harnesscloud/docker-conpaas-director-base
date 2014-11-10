@@ -24,6 +24,7 @@ RUN apt-get update && \
         sqlite3 && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
+RUN pip install argcomplete
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
@@ -36,9 +37,9 @@ RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
     tar -xaf cpsfrontend-*.tar.gz && \
     easy_install --always-unzip cpslib-*.tar.gz cpsclient-*.tar.gz && \
-    cp -r cpsfrontend-*/www/* /var/www/html/ && \
-    rm /var/www/html/index.html && \
-    cp /var/www/html/config-example.php /var/www/html/config.php && \
+    cp -r cpsfrontend-*/www/* /var/www/ && \
+    rm /var/www/index.html && \
+    cp /var/www/config-example.php /var/www/config.php && \
     cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
     mv /etc/apache2/sites-available/conpaas-director \
        /etc/apache2/sites-available/conpaas-director.conf && \

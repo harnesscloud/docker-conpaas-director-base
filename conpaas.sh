@@ -5,6 +5,8 @@ PASSWORD="password"
 EMAIL="test@email"
 IP_ADDRESS="$(ip addr show | perl -ane '"'"'print substr($F[1], 0, index($F[1], "/")), "\\n" if /^\s*inet\s/;'"'"' | grep -v 127.0.0.1 | head -1)"
 DIRECTOR_URL="https://${IP_ADDRESS}:5555"
+CRS_URL="http://${IP_ADDRESS}:56789"
+IMAGE_ID=""
 
 TMPFILE=$(mktemp)
 while [ ${ATTEMPTS} -gt 0 ]; do
@@ -25,6 +27,9 @@ export HOME=/root
 
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '"'"'${DIRECTOR_URL}'"'"';%" /var/www/html/config.php
 sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cfg
+sed -i -e '/^\[iaas\]/,/^\[.*\]/ { /^DRIVER\s*=.*/ d; }' -e '/^\[iaas\]/ a DRIVER = harness' /etc/cpsdirector/director.cfg
+sed -i -e "/^\[iaas\]/,/^\[.*\]/ { /^HOST\s*=.*/ d; }' -e '/^\[iaas\]/ a HOST = ${CRS_URL}" /etc/cpsdirector/director.cfg
+sed -i -e "/^\[iaas\]/,/^\[.*\]/ { /^IMAGE_ID\s*=.*/ d; }' -e '/^\[iaas\]/ a IMAGE_ID = ${CRS_URL}" /etc/cpsdirector/director.cfg
 echo ServerName ${IP_ADDRESS} > /etc/apache2/conf-available/ip-servername.conf
 a2enconf ip-servername 
 service apache2 start
