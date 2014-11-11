@@ -39,21 +39,16 @@ RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
     tar -xaf cpsfrontend-*.tar.gz && \
     easy_install --always-unzip cpslib-*.tar.gz cpsclient-*.tar.gz && \
-    cp -r cpsfrontend-*/www/* /var/www/ && \
+    rm -rf *.tar.gz && \
+    cp -r cpsfrontend-*/www/* /var/www && \
     rm /var/www/index.html && \
     cp /var/www/config-example.php /var/www/config.php && \
-    cd cpsdirector-1.5.0 && echo 'localhost' | make install && cd .. && \
-    cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
-    sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini && \
-    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
-    a2ensite conpaas-director && \
     a2enmod ssl && \
     a2ensite default-ssl && \
-    rm -rf *.tar.gz cpsfrontend* cpsdirector*
 
 # create startup scripts
-ADD conpaas.sh /etc/my_init.d/10-conpaas
-RUN chmod 0755 /etc/my_init.d/10-conpaas
+ADD conpaas-director.sh /etc/my_init.d/10-conpaas-director
+RUN chmod 0755 /etc/my_init.d/10-conpaas-director
 
 # data volumes
 VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/log/apache2" ]
