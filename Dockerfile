@@ -31,7 +31,7 @@ RUN pip install argcomplete
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
-    git clone -b harness https://gitlab.harness-project.eu/gtato/conpaas.git \
+    git clone -b harness https://gitlab.harness-project.eu/mark/conpaas.git \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
 
