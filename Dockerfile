@@ -40,6 +40,7 @@ RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
     tar -xaf cpsfrontend-*.tar.gz && \
     easy_install --always-unzip cpslib-*.tar.gz && \
+    easy_install --always-unzip cpsclient-*.tar.gz && \
     rm -rf *.tar.gz && \
     cp -r cpsfrontend-*/www/* /var/www && \
     rm /var/www/index.html && \
