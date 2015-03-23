@@ -1,4 +1,4 @@
-FROM marklee77/debian-cloudimage:latest
+FROM harnesscloud/debian-cloudimage:latest
 MAINTAINER Mark Stillwell <mark@stillwell.me>
 
 # install dependencies
