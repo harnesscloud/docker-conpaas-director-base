@@ -54,10 +54,6 @@ ADD conpaas-director.sh /etc/my_init.d/10-conpaas-director
 ADD php.ini /etc/php5/apache2/
 RUN chmod 0755 /etc/my_init.d/10-conpaas-director
 
-# enable high-port access
-ADD 999-highport /etc/apache2/sites-available/
-RUN a2ensite 999-highport
-
 # data volumes
 VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/log/apache2" ]
 
