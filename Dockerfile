@@ -31,7 +31,8 @@ RUN pip install argcomplete
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
-    git clone -b harness https://gitlab.harness-project.eu/mark/conpaas.git \
+   # git clone -b harness https://gitlab.harness-project.eu/gtato/conpaas.git \
+    git clone -b harness https://github.com/ConPaaS-team/conpaas.git \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
 
@@ -50,7 +51,12 @@ RUN bash mkdist.sh 1.5.0 && \
 
 # create startup scripts
 ADD conpaas-director.sh /etc/my_init.d/10-conpaas-director
+ADD php.ini /etc/php5/apache2/
 RUN chmod 0755 /etc/my_init.d/10-conpaas-director
+
+# enable high-port access
+ADD 999-highport /etc/apache2/sites-available/
+RUN a2ensite 999-highport
 
 # data volumes
 VOLUME [ "/etc/apache2", "/etc/cpsdirector", "/var/log/apache2" ]
