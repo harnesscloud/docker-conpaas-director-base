@@ -26,11 +26,11 @@ rm -f ${TMPFILE}
 export HOME=/root
 
 cd /var/cache/docker/workdirs/conpaas/cpsdirector-*
+cp director.cfg.example /etc/cpsdirector/director.cfg
 echo "${IP_ADDRESS}" | make install
 cd ..
 cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini
 cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt 
-cp cpsdirector-*/director.cfg.example /etc/cpsdirector/director.cfg
 
 sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '${DIRECTOR_URL}';%" /var/www/config.php
