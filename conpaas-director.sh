@@ -26,7 +26,6 @@ rm -f ${TMPFILE}
 export HOME=/root
 
 cd /var/cache/docker/workdirs/conpaas/cpsdirector-*
-cp director.cfg.example /etc/cpsdirector/director.cfg
 echo "${IP_ADDRESS}" | make install
 cd ..
 cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini
