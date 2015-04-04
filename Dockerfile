@@ -31,7 +31,6 @@ RUN pip install argcomplete
 
 # prepare working directory
 RUN mkdir -p /var/cache/docker/workdirs && \
-   # git clone -b harness https://gitlab.harness-project.eu/gtato/conpaas.git \
     git clone -b harness https://github.com/ConPaaS-team/conpaas.git \
         /var/cache/docker/workdirs/conpaas
 WORKDIR /var/cache/docker/workdirs/conpaas
@@ -48,6 +47,11 @@ RUN bash mkdist.sh 1.5.0 && \
     cp /var/www/config-example.php /var/www/config.php && \
     a2enmod ssl && \
     a2ensite default-ssl
+    cd cpsdirector-* && \
+    echo 0.0.0.0 | make install && \
+    cd .. && \
+    cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
+    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt
 
 # create startup scripts
 ADD conpaas-director.sh /etc/my_init.d/10-conpaas-director
