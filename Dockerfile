@@ -51,7 +51,8 @@ RUN bash mkdist.sh 1.5.0 && \
     echo 0.0.0.0 | make install && \
     cd .. && \
     cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
-    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt
+    cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
+    a2ensite conpaas-director
 
 # create startup scripts
 ADD conpaas-director.sh /etc/my_init.d/10-conpaas-director

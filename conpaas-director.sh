@@ -23,14 +23,6 @@ if [ -e "${TMPFILE}" ]; then
 fi
 rm -f ${TMPFILE}
 
-export HOME=/root
-
-cd /var/cache/docker/workdirs/conpaas/cpsdirector-*
-echo "${IP_ADDRESS}" | make install
-cd ..
-cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini
-cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt 
-
 sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '${DIRECTOR_URL}';%" /var/www/config.php
 sed -i "/^DIRECTOR_URL =/s%=.*$%= ${DIRECTOR_URL}%" /etc/cpsdirector/director.cfg
@@ -38,7 +30,6 @@ sed -i -e'/^\[iaas\]/,/^\[.*\]/{/^DRIVER\s*=.*/d}' -e'/^\[iaas\]/aDRIVER = harne
 sed -i -e"/^\[iaas\]/,/^\[.*\]/{/^HOST\s*=.*/d}" -e"/^\[iaas\]/aHOST = ${CRS_URL}" /etc/cpsdirector/director.cfg
 sed -i -e"/^\[iaas\]/,/^\[.*\]/{/^IMAGE_ID\s*=.*/d}" -e"/^\[iaas\]/aIMAGE_ID = ${IMAGE_ID}" /etc/cpsdirector/director.cfg
 
-a2ensite conpaas-director
 echo ServerName ${IP_ADDRESS} > /etc/apache2/conf.d/ip-servername.conf
 
 service apache2 start
