@@ -46,7 +46,7 @@ RUN bash mkdist.sh 1.5.0 && \
     rm /var/www/index.html && \
     cp /var/www/config-example.php /var/www/config.php && \
     a2enmod ssl && \
-    a2ensite default-ssl
+    a2ensite default-ssl && \
     cd cpsdirector-* && \
     echo 0.0.0.0 | make install && \
     cd .. && \
