@@ -31,6 +31,7 @@ sed -i -e"/^\[iaas\]/,/^\[.*\]/{/^HOST\s*=.*/d}" -e"/^\[iaas\]/aHOST = ${CRS_URL
 sed -i -e"/^\[iaas\]/,/^\[.*\]/{/^IMAGE_ID\s*=.*/d}" -e"/^\[iaas\]/aIMAGE_ID = ${IMAGE_ID}" /etc/cpsdirector/director.cfg
 
 echo ServerName ${IP_ADDRESS} > /etc/apache2/conf.d/ip-servername.conf
+echo ${IP_ADDRESS} | cpsconf.py
 
 service apache2 start
 
