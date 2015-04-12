@@ -1,12 +1,4 @@
 #!/bin/bash
-: ${USERNAME:="test"}
-: ${PASSWORD:="password"}
-: ${EMAIL:="test@email"}
-
-DIRECTOR_URL="https://${IP_ADDRESS}:5555"
-CRS_URL="http://${IP_ADDRESS}:56789"
-IMAGE_ID=""
-
 TMPFILE=$(mktemp)
 ATTEMPTS=10
 while [ ${ATTEMPTS} -gt 0 ]; do
@@ -23,7 +15,13 @@ if [ -e "${TMPFILE}" ]; then
 fi
 rm -f ${TMPFILE}
 
+: ${USERNAME:="test"}
+: ${PASSWORD:="password"}
+: ${EMAIL:="test@email"}
+: ${IMAGE_ID:=""}
 : ${IP_ADDRESS:="$(ip addr show | perl -ne 'print "$1\n" if /inet ([\d.]+).*scope global/' | grep "$IP_PREFIX" | head -1)"}
+: ${DIRECTOR_URL:="https://${IP_ADDRESS}:5555"}
+: ${CRS_URL:="http://${IP_ADDRESS}:56789"}
 
 sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '${DIRECTOR_URL}';%" /var/www/config.php
