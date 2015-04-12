@@ -3,7 +3,6 @@
 : ${PASSWORD:="password"}
 : ${EMAIL:="test@email"}
 
-IP_ADDRESS="$(ip addr show | perl -ne 'print "$1\n" if /inet ([\d.]+).*scope global/' | grep "$IP_PREFIX" | head -1)"
 DIRECTOR_URL="https://${IP_ADDRESS}:5555"
 CRS_URL="http://${IP_ADDRESS}:56789"
 IMAGE_ID=""
@@ -23,6 +22,8 @@ if [ -e "${TMPFILE}" ]; then
     . ${TMPFILE}
 fi
 rm -f ${TMPFILE}
+
+: ${IP_ADDRESS:="$(ip addr show | perl -ne 'print "$1\n" if /inet ([\d.]+).*scope global/' | grep "$IP_PREFIX" | head -1)"}
 
 sed -i "/^logfile\s*=/s%=.*$%= /var/log/apache2/cpsfrontend-error.log%" /etc/cpsdirector/main.ini
 sed -i "/^const DIRECTOR_URL =/s%=.*$%= '${DIRECTOR_URL}';%" /var/www/config.php
