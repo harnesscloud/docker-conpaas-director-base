@@ -52,6 +52,7 @@ RUN bash mkdist.sh 1.5.0 && \
     cd .. && \
     cp cpsfrontend-*/conf/main.ini /etc/cpsdirector/main.ini && \
     cp cpsfrontend-*/conf/welcome.txt /etc/cpsdirector/welcome.txt && \
+    chown www-data:www-data /var/log/apache2 && \
     a2ensite conpaas-director
 
 # create startup scripts
