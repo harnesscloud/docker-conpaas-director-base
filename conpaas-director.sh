@@ -1,14 +1,15 @@
 #!/bin/bash
-ATTEMPTS=10
-USERNAME="test"
-PASSWORD="password"
-EMAIL="test@email"
-IP_ADDRESS="$(ip addr show | perl -ane 'print substr($F[1], 0, index($F[1], "/")), "\n" if /^\s*inet\s/;' | grep -v 127.0.0.1 | head -1)"
+: ${USERNAME:="test"}
+: ${PASSWORD:="password"}
+: ${EMAIL:="test@email"}
+
+IP_ADDRESS="$(ip addr show | perl -ne 'print "$1\n" if /inet ([\d.]+).*scope global/' | grep "$IP_PREFIX" | head -1)"
 DIRECTOR_URL="https://${IP_ADDRESS}:5555"
 CRS_URL="http://${IP_ADDRESS}:56789"
 IMAGE_ID=""
 
 TMPFILE=$(mktemp)
+ATTEMPTS=10
 while [ ${ATTEMPTS} -gt 0 ]; do
   ATTEMPTS=$((${ATTEMPTS}-1))
   curl -sf http://169.254.169.254/openstack/2012-08-10/user_data\
