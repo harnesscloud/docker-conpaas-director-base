@@ -36,8 +36,8 @@ RUN mkdir -p /var/cache/docker/workdirs && \
 WORKDIR /var/cache/docker/workdirs/conpaas
 
 # install conpaas 
-RUN git checkout 663ee61f644474684bca61497ed8b9a7888f11c6 && \
-    bash mkdist.sh 1.5.0 && \
+#RUN git checkout 663ee61f644474684bca61497ed8b9a7888f11c6
+RUN bash mkdist.sh 1.5.0 && \
     tar -xaf cpsdirector-*.tar.gz && \
     tar -xaf cpsfrontend-*.tar.gz && \
     easy_install --always-unzip cpslib-*.tar.gz && \
