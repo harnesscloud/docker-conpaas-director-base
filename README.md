@@ -1,13 +1,3 @@
-This folder contains the dockerfiles for creating the image for the ConPaaS
-container.
-
-To test it out in vagrant run "vagrant up". It should be possible to connect
-via vagrant ssh or by http on localhost port 8080.
-
-The startup for the container expects to read configuration information from
-the following environment variables:
-
-- DIRECTOR_URL
-- USERNAME
-- PASSWORD
-- EMAIL
+The purpose of this repository is to provide a base for building the conpaas
+director. The aim is to cache as many of the tedious build steps that take
+a long grid5k in a binary linked by the docker registry.
