@@ -19,11 +19,16 @@ RUN apt-get update && \
         python \
         python-dev \
         python-httplib2 \
+        python-numpy \
+        python-paramiko \
+        python-pexpect \
         python-pip \
         python-openssl \
         python-pycurl \
+        python-scipy \
         python-setuptools \
         python-simplejson \
+        python-sklearn \
         sqlite3 && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
