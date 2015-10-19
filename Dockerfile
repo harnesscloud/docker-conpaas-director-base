@@ -33,3 +33,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN pip install argcomplete
+
+ADD ssh_config /root/.ssh/config
+RUN chmod 644 /root/.ssh/config
